@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Bar Chart</title>
+</head>
+<body>
+<form>
+    <input id="chart-values-input" type ="text" value ="112, 13, 3, 2, 11, 110, 7, 18">
+    <button id="chart-draw-button" type = "button">Draw chart</button>
+</form>
+
+Click on the bar chart to download it<br>
+<a id="chart-download-link" href="#" download="barchart">
+    <canvas id="chart-canvas" style="width: 300px; height: 200px">
+        Your browser does not support tha canvas element.
+    </canvas>
+</a>
+
+<script type="module">
+    import {BarChart} from './canvas-bar-chart-library.js';
+
+    const chartCanvas = document.getElementById('chart-canvas');
+    const chartDrawButton = document.getElementById('chart-draw-button');
+    const chartDownloadLink = document.getElementById('chart-download-link');
+    const chartValuesInput = document.getElementById('chart-values-input');
+
+    const barChart = new BarChart(chartCanvas);
+
+    const options = {
+        'drawOutline': true
+    }
+
+    chartDrawButton.addEventListener('click', () => {
+        const values = chartValuesInput.value;
+        barChart.draw(values.split(',').map(Number), options);
+    });
+
+    chartDownloadLink.addEventListener('click', (ev) => {
+        const dataUrl = chartCanvas.toDataURL('image/png');
+        ev.currentTarget.setAttribute('href', dataUrl);
+    });
+</script>
+
+</body>
+</html>
